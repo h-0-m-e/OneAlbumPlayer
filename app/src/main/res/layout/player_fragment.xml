@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/infoGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="album,albumSubtitle, artist, releaseDate, genre, artistName" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/infoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+
+        android:backgroundTint="@color/transparent"
+        style="@style/Widget.AppTheme.InfoButton"
+        app:layout_constraintBottom_toBottomOf="@id/infoBarrier"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/album"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/common_dimen"
+        android:textSize="@dimen/common_medium_dimen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/album" />
+
+    <TextView
+        android:id="@+id/albumTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+
+        android:textColor="@color/black"
+        android:textSize="@dimen/medium_dimen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/album"
+        app:layout_constraintBottom_toTopOf="@id/albumSubtitle"
+        tools:text="@string/album_title" />
+
+    <TextView
+        android:id="@+id/albumSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_small_dimen"
+        android:textSize="@dimen/common_dimen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/albumTitle"
+        tools:text="@string/album_subtitle" />
+
+    <TextView
+        android:id="@+id/artist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_small_dimen"
+        android:textSize="@dimen/common_medium_dimen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/albumSubtitle"
+        android:text="@string/artist" />
+
+    <TextView
+        android:id="@+id/artistName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:textColor="@color/black"
+        android:textSize="@dimen/common_medium_dimen_text"
+        app:layout_constraintBottom_toBottomOf="@id/artist"
+        app:layout_constraintStart_toEndOf="@id/artist"
+        app:layout_constraintTop_toTopOf="@id/artist"
+        tools:text="@string/artist_name" />
+
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_small_dimen"
+        android:textSize="@dimen/common_dimen_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/artist"
+        tools:text="@string/release_date" />
+
+    <TextView
+        android:id="@+id/genre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/common_dimen"
+        android:layout_marginTop="@dimen/common_small_dimen"
+        android:layout_marginBottom="@dimen/common_dimen"
+        android:textSize="@dimen/common_dimen_text"
+        app:layout_constraintBottom_toTopOf="@id/infoBarrier"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/releaseDate"
+        tools:text="@string/genre" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/infoBarrier"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="genre, albumTitle" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoBarrier"
+        tools:listitem="@layout/track_item" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
