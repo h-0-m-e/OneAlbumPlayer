@@ -42,10 +42,7 @@ class TrackViewHolder(
 
 
             playButton.setOnClickListener {
-                when(track.isPlaying){
-                    true -> onInteractionListener.onPause(track)
-                    false -> onInteractionListener.onPlay(track)
-                }
+                onInteractionListener.onPlay(track)
             }
         }
     }

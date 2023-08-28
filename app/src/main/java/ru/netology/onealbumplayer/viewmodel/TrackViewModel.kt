@@ -27,10 +27,13 @@ class TrackViewModel : ViewModel() {
     val tracks: LiveData<List<Track>>
         get() = _tracks
 
-    private var lastPlayedId: Long = 0
+    private var lastPlayedId = -1L
 
     init {
         getAlbum()
+        mediaObserver.mediaPlayer?.setOnCompletionListener {
+            playNext()
+        }
     }
 
     private fun getAlbum() = viewModelScope.launch {
@@ -43,51 +46,41 @@ class TrackViewModel : ViewModel() {
     }
 
     fun play(track: Track) {
-        _tracks.value =
-            _tracks.value?.map { if (it.id == track.id) it.copy(isPlaying = true) else it }
+        val needResume = lastPlayedId == track.id
 
-        if (lastPlayedId != 0L) {
-            _tracks.value =
-                _tracks.value?.map { if (lastPlayedId == it.id) it.copy(isPlaying = false) else it }
+        _tracks.value = _tracks.value?.map {
+            if (it.id == track.id) {
+                it.copy(isPlaying = !track.isPlaying)
+            } else {
+                it.copy(isPlaying = false)
+            }
         }
 
         mediaObserver.apply {
-            //TODO Try to give a list to player
-            if (lastPlayedId != 0L && lastPlayedId != track.id){
-                mediaPlayer?.pause()
-                mediaPlayer?.release()
-            } else{
-                lastPlayedId = track.id
-            }
-
-            mediaPlayer?.setDataSource(BASE_URL + _tracks.value!![(lastPlayedId - 1).toInt()].file)
-            mediaObserver.mediaPlayer?.setOnCompletionListener {
-                it.release()
-                if (lastPlayedId > _tracks.value!!.size){
-                    lastPlayedId = 1
-                }else{
-                    lastPlayedId++
+            when {
+                track.isPlaying -> mediaPlayer?.pause()
+                needResume -> mediaPlayer?.start()
+                else -> {
+                    mediaPlayer?.reset()
+                    mediaPlayer?.setDataSource(BASE_URL + track.file)
+                    play()
+                    lastPlayedId = track.id
                 }
-//                mediaPlayer?.setDataSource(BASE_URL + _tracks.value!![(lastPlayedId - 1).toInt()].file)
             }
-//            mediaObserver.mediaPlayer?.setOnCompletionListener {
-//                lastPlayedId = startTrackId
-//                it.release()
-//                    it.setDataSource(BASE_URL +
-//                            if (track.id.toInt() > _tracks.value!!.size)
-//                                _tracks.value!!.first().file .also { startTrackId = 1 }
-//                            else
-//                                _tracks.value!![(track.id - 1).toInt()]) .also { startTrackId++ }
-//
-//                }
-//            }
-
-        }.play()
-
-
+        }
     }
 
-    fun pause(track: Track){
-        mediaObserver.mediaPlayer?.pause()
+    private fun playNext() {
+        val tracksOrEmpty = tracks.value.orEmpty()
+
+        if (tracksOrEmpty.isEmpty()) return
+
+        val lastPlayedIndex = tracksOrEmpty.indexOfFirst { it.isPlaying }
+
+        val nextTrackIndex = if (lastPlayedIndex == tracksOrEmpty.lastIndex) 0 else lastPlayedIndex + 1
+
+        val nextTrack = tracksOrEmpty[nextTrackIndex]
+
+        play(nextTrack)
     }
 }

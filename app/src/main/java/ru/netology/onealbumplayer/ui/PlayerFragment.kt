@@ -11,7 +11,6 @@ import ru.netology.onealbumplayer.adapter.TracksAdapter
 import ru.netology.onealbumplayer.databinding.PlayerFragmentBinding
 import ru.netology.onealbumplayer.dto.Track
 import ru.netology.onealbumplayer.listener.OnInteractionListener
-import ru.netology.onealbumplayer.observer.MediaLifecycleObserver
 import ru.netology.onealbumplayer.viewmodel.TrackViewModel
 
 class PlayerFragment: Fragment() {
@@ -32,23 +31,11 @@ class PlayerFragment: Fragment() {
                 viewModel.play(track)
             }
 
-            override fun onPause(track: Track) {
-                viewModel.pause(track)
-            }
-
-            override fun onNext(track: Track) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onPrevious(track: Track) {
-                TODO("Not yet implemented")
-            }
-
         })
 
-        fun refresh(position: Int){
-            adapter.notifyItemChanged(position)
-        }
+//        fun refresh(position: Int){
+//            adapter.notifyItemChanged(position)
+//        }
 
         binding.list.adapter = adapter
 
