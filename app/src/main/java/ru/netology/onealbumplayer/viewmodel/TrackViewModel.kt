@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.netology.onealbumplayer.BuildConfig
 import ru.netology.onealbumplayer.dto.Album
 import ru.netology.onealbumplayer.dto.Track
 import ru.netology.onealbumplayer.observer.MediaLifecycleObserver
 import ru.netology.onealbumplayer.repository.TrackRepository
 
-private const val BASE_URL =
-    "https://github.com/netology-code/andad-homeworks/raw/master/09_multimedia/data/"
+private const val BASE_URL = BuildConfig.BASE_URL
 
 class TrackViewModel : ViewModel() {
 
